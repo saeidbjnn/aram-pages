@@ -1,0 +1,3 @@
+<!-- Add inside the main iOS app target Info.plist <dict>. -->
+<key>NSSupportsLiveActivities</key>
+<true/>

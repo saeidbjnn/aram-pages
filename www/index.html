@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" id="theme-color" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="آرام" />
+  <meta name="description" content="برنامه‌ریز شخصی مینیمال، فارسی و آفلاین" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>آرام — برنامه‌ریز شخصی</title>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="jalali-date">امروز</p>
+        <h1 id="page-title">روزت را آرام شروع کن</h1>
+      </div>
+      <div class="top-actions">
+        <time id="current-time" class="time-pill" aria-label="زمان فعلی">--:--</time>
+        <button type="button" class="icon-button" id="global-search" aria-label="جست‌وجوی سراسری">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+        </button>
+        <button type="button" class="icon-button" id="theme-toggle" aria-label="تغییر حالت نمایش">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <section class="view active" data-view="home" aria-labelledby="home-heading">
+        <h2 class="sr-only" id="home-heading">خانه</h2>
+
+        <section class="hero-card card">
+          <div class="hero-copy">
+            <span class="section-kicker">پیشرفت امروز</span>
+            <strong id="daily-progress-label"></strong>
+            <p id="daily-summary"></p>
+          </div>
+          <div class="progress-ring large" style="--ring-color:var(--ring-green)" aria-label="پیشرفت امروز">
+            <svg viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="50"/><circle class="ring-value" cx="60" cy="60" r="50"/></svg>
+            <span></span>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div><span class="section-kicker">برنامه</span><h2>خط زمانی امروز</h2></div>
+            <button type="button" class="text-button" data-open-sheet="schedule">نمایش همه</button>
+          </div>
+          <div class="timeline card" id="timeline-list"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <div><span class="section-kicker">ریتم روزانه</span><h2>عادت‌ها</h2></div>
+            <button type="button" class="text-button" id="manage-habits"><span id="habit-count">۰ از ۰</span> · مدیریت</button>
+          </div>
+          <div class="habit-grid" id="habit-list"></div>
+        </section>
+
+        <section class="section-block split-grid">
+          <article class="card focus-card">
+            <div class="section-heading compact">
+              <div><span class="section-kicker">تمرکز</span><h2>یک جلسه عمیق</h2></div>
+              <span class="status-dot"></span>
+            </div>
+            <div class="mini-timer" id="home-focus-time"></div>
+            <div class="segmented" id="home-focus-presets">
+              <button type="button" class="active" data-minutes="25">۲۵</button><button type="button" data-minutes="45">۴۵</button><button type="button" data-minutes="60">۶۰</button><button type="button" data-minutes="90">۹۰</button>
+            </div>
+            <button type="button" class="primary-button" data-open-view="focus">شروع تمرکز</button>
+          </article>
+
+          <article class="card upcoming-card">
+            <div class="section-heading compact"><div><span class="section-kicker">بعدی</span><h2>کارهای پیش‌رو</h2></div></div>
+            <div id="upcoming-list" class="compact-list"></div>
+          </article>
+        </section>
+
+        <section class="section-block" id="today-module-section" hidden>
+          <div class="section-heading">
+            <div><span class="section-kicker">بخش‌های فعال</span><h2>خلاصه امروز</h2></div>
+          </div>
+          <div class="feature-grid module-summary-grid" id="today-module-summaries"></div>
+        </section>
+      </section>
+
+      <section class="view" data-view="calendar" aria-labelledby="calendar-heading">
+        <div class="view-header">
+          <div><span class="section-kicker">ماه جلالی</span><h2 id="calendar-heading">ماه جاری</h2><p class="muted" id="gregorian-month"></p></div>
+          <div class="inline-actions"><button type="button" class="icon-button" id="calendar-prev" aria-label="ماه قبل">‹</button><button type="button" class="icon-button" id="calendar-next" aria-label="ماه بعد">›</button></div>
+        </div>
+        <div class="calendar-card card">
+          <div class="weekdays"><span>ش</span><span>ی</span><span>د</span><span>س</span><span>چ</span><span>پ</span><span>ج</span></div>
+          <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
+        <article class="card day-detail" id="day-detail">
+          <div class="section-heading compact"><div><span class="section-kicker">روز انتخاب‌شده</span><h2 id="selected-day-title">امروز</h2></div><span class="muted" id="selected-day-gregorian"></span></div>
+          <div id="day-detail-content" class="detail-stack"></div>
+        </article>
+      </section>
+
+      <section class="view" data-view="focus" aria-labelledby="focus-heading">
+        <div class="view-header focus-view-header">
+          <div><span class="section-kicker">تمرکز عمیق</span><h2 id="focus-heading">فقط همین یک کار</h2></div>
+          <div class="focus-mode-control" id="focus-mode-control" role="tablist" aria-label="حالت تایمر" style="--indicator-x:-200%">
+            <span class="focus-mode-indicator" aria-hidden="true"></span>
+            <button type="button" data-timer-mode="work" role="tab" aria-selected="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7" width="17" height="12.5" rx="3"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-11.5 5h17M10 12v2h4v-2"/></svg>
+              <span>کار</span>
+            </button>
+            <button type="button" data-timer-mode="break" role="tab" aria-selected="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h12v5.5A4.5 4.5 0 0 1 12.5 18h-3A4.5 4.5 0 0 1 5 13.5Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M7 4.5c0 1 1 1 1 2m3-2c0 1 1 1 1 2"/></svg>
+              <span>استراحت</span>
+            </button>
+            <button type="button" class="active" data-timer-mode="focus" role="tab" aria-selected="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 1.8V5m0 14v3.2M1.8 12H5m14 0h3.2"/></svg>
+              <span>تمرکز</span>
+            </button>
+          </div>
+        </div>
+        <section class="timer-stage card">
+          <div class="countdown-ring" id="focus-ring" style="--ring-color:var(--ring-blue)">
+            <svg viewBox="0 0 240 240"><circle class="ring-track" cx="120" cy="120" r="104"/><circle class="ring-value" cx="120" cy="120" r="104"/></svg>
+            <div class="countdown-copy"><span id="timer-phase"></span><strong id="timer-display" role="timer" aria-live="off"></strong><small id="timer-subtitle"></small></div>
+          </div>
+          <div class="timer-presets" id="timer-presets">
+            <button type="button" class="chip active" data-minutes="25">۲۵ دقیقه</button><button type="button" class="chip" data-minutes="45">۴۵ دقیقه</button><button type="button" class="chip" data-minutes="60">۶۰ دقیقه</button><button type="button" class="chip" data-minutes="90">۹۰ دقیقه</button><button type="button" class="chip" data-custom-timer>سفارشی</button>
+          </div>
+          <div class="timer-controls">
+            <button type="button" class="secondary-button" id="timer-stop">توقف</button>
+            <button type="button" class="primary-button large-button" id="timer-start">شروع</button>
+            <button type="button" class="secondary-button" id="timer-pause">مکث</button>
+          </div>
+        </section>
+        <section class="focus-insight card">
+          <div><span class="section-kicker">امروز</span><strong id="focus-minutes-today"></strong><p>زمان تمرکز ثبت‌شده</p></div>
+          <div class="bar-chart" id="focus-bars" role="img" aria-label="نمودار تمرکز هفتگی"></div>
+        </section>
+      </section>
+
+      <section class="view" data-view="stats" aria-labelledby="stats-heading">
+        <div class="view-header"><div><span class="section-kicker">بینش‌ها</span><h2 id="stats-heading">پیشرفت، بدون قضاوت</h2></div><select class="minimal-select" id="stats-range"><option value="week">این هفته</option><option value="month">این ماه</option></select></div>
+        <div class="rings-grid" id="stats-rings"></div>
+        <section class="card chart-card">
+          <div class="section-heading compact"><div><span class="section-kicker" id="stats-period-label"></span><h2>ریتم انجام کارها</h2></div><strong id="stats-trend"></strong></div>
+          <div class="line-chart" id="completion-chart"></div>
+          <div class="chart-labels" id="completion-chart-labels"></div>
+        </section>
+        <div class="metrics-list card" id="metrics-list"></div>
+      </section>
+
+      <section class="view" data-view="more" aria-labelledby="more-heading">
+        <div class="view-header"><div><span class="section-kicker">فضاهای شخصی</span><h2 id="more-heading">هر چیز، جای خودش</h2></div></div>
+        <div class="feature-grid" id="feature-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <button type="button" class="fab" id="quick-add" aria-label="افزودن سریع"><span>＋</span><small>افزودن</small></button>
+
+    <nav class="bottom-nav" aria-label="ناوبری اصلی" style="--indicator-x:0%">
+      <span class="nav-active-indicator" aria-hidden="true"></span>
+      <button type="button" class="active" data-view-target="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1Z"/></svg><span>امروز</span></button>
+      <button type="button" data-view-target="calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18"/></svg><span>تقویم</span></button>
+      <button type="button" data-view-target="focus"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><span>تمرکز</span></button>
+      <button type="button" data-view-target="stats"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10m7 10V4m7 16v-7"/></svg><span>آمار</span></button>
+      <button type="button" data-view-target="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>بیشتر</span></button>
+    </nav>
+  </div>
+
+  <div class="sheet-backdrop" id="sheet-backdrop" aria-hidden="true"></div>
+  <aside class="bottom-sheet" id="bottom-sheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sheet-title" tabindex="-1">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-header"><div><span class="section-kicker" id="sheet-kicker">افزودن سریع</span><h2 id="sheet-title">مورد جدید</h2></div><button type="button" class="icon-button" id="sheet-close" aria-label="بستن"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="sr-only" id="timer-announcement" role="alert" aria-live="assertive"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

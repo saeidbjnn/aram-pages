@@ -1,0 +1,29 @@
+{
+  "name": "aram-planner-pwa",
+  "version": "3.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check app.js && node --check js/domain.js && node --check js/reports.js && node --check js/commands.js && node --check js/store.js && node --check js/timer.js && node --check js/native-timer-bridge.js && node --check js/diagnostics.js && node --check js/developer-mode.js && node --check js/modules.js && node --check js/module-commands.js && node --check js/onboarding.js && node --check js/module-ui.js && node --check sw.js && node --check scripts/build-native-web.mjs",
+    "validate": "npm run check && npm test",
+    "qa:browser": "python qa/browser_qa.py",
+    "qa:bugfix": "python qa/bugfix_qa.py",
+    "qa": "npm run qa:browser && npm run qa:bugfix && npm run qa:module && npm run qa:native",
+    "qa:module": "python qa/module_qa.py",
+    "native:web": "node scripts/build-native-web.mjs",
+    "cap:add:ios": "npm run native:web && npx cap add ios",
+    "cap:sync:ios": "npm run native:web && npx cap sync ios",
+    "cap:open:ios": "npx cap open ios",
+    "qa:native": "python qa/native_bridge_qa.py"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1",
+    "aram-native-timer": "file:./native/aram-native-timer"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.4.1",
+    "typescript": "^5.9.2"
+  }
+}
